@@ -1,0 +1,11 @@
+{
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.22.1",
+    "dotenv": "^17.2.3",
+    "playwright": "^1.56.1"
+  }
+}
