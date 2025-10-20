@@ -14,8 +14,14 @@ export function mouliParser(mouliJson) {
 
   const taskDict = {}
   for (const taskKey in mouliJson.skills) {
-    const task = mouliJson.skills[taskKey].FullSkillReport;
-    taskDict[task.name] = task.tests[0].passed;
+    let task = mouliJson.skills[taskKey].FullSkillReport;
+    if (!task) {
+      task = mouliJson.skills[taskKey].BreakdownSkillReport;
+      taskDict[task.name] = task.breakdown.passed;
+    } else {
+      taskDict[task.name] = task.tests[0].passed;
+    }
+    
   }
   dict.task = taskDict;
 
@@ -26,7 +32,7 @@ export function mouliParser(mouliJson) {
             counter += 1;
         }
         }
-  dict.pourcent = (counter / Object.keys(taskDict).length) * 100;
+  dict.pourcent = Math.round((counter / Object.keys(taskDict).length) * 100);
   dict.git = mouliJson.gitCommit;
   dict.comment = mouliJson.externalItems[0].comment;
   return dict

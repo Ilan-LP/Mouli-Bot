@@ -58,7 +58,7 @@ module.exports = {
 
         let newUrl = "https://myresults.epitest.eu/index.html";
         if (type == "project") {
-        newUrl += "#d/" + year + "/" + newData.project.module.code + "/" + newData.project.slug + "/" + newData.results.testRunId;
+            newUrl += "#d/" + year + "/" + newData.project.module.code + "/" + newData.project.slug + "/" + newData.results.testRunId;
         }
         const fetchUrl = getFetchUrl(newUrl);
         const goodData = await bis(fetchUrl);

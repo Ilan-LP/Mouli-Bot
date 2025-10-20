@@ -19,7 +19,7 @@ export function yearParser(yearJson) {
             counter += 1;
         }
         }
-      const pourcent = (counter / Object.keys(data.results.skills).length) * 100;
+      const pourcent = Math.round((counter / Object.keys(data.results.skills).length) * 100);
       let date = data.date;
       const timestampMs = Date.parse(date);
       const timestampSec = Math.floor(timestampMs / 1000);

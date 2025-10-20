@@ -3,6 +3,7 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
 const deployCommands = require('./deploy-commands.js');
 const config = require('./config.js');
+const { check } = require('./mouli-checker/check.js');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -33,6 +34,14 @@ client.once(Events.ClientReady, async readyClient => {
 	}
 	
 	console.log(`[LOG] Ready! Logged in as ${readyClient.user.tag}`);
+
+	function scheduleNextCheck(client) {
+		const delay = (Math.random() * (30 - 10) + 10) * 60 * 1000;
+		setTimeout(() => {check(client);scheduleNextCheck();}, delay);
+	}
+
+	check(client)
+	scheduleNextCheck(client);
 });
 
 
@@ -45,7 +54,8 @@ client.on(Events.InteractionCreate, async interaction => {
 		return;
 	}
 
-	try {
+	try 
+	{
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
