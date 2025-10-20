@@ -4,6 +4,7 @@ import { yearParser } from './year-parser.js';
 import { ContainerBuilder, TextDisplayBuilder, MessageFlags } from 'discord.js';
 
 export async function check(client) {
+    console.log("[LOG] Mouli check")
     let last;
     try {
         last = fs.readFileSync('data.json', 'utf-8');

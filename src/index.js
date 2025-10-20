@@ -36,7 +36,7 @@ client.once(Events.ClientReady, async readyClient => {
 	console.log(`[LOG] Ready! Logged in as ${readyClient.user.tag}`);
 
 	function scheduleNextCheck(client) {
-		const delay = (Math.random() * (30 - 10) + 10) * 60 * 1000;
+		const delay = (Math.random() * (10 - 5) + 5) * 60 * 1000;
 		setTimeout(() => {check(client);scheduleNextCheck();}, delay);
 	}
 
