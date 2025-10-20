@@ -5,8 +5,9 @@ const { getFailedOutputText } = require('../../mouli-checker/fail.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('last')
-		.setDescription('View the stats of the last mouli'),
+		.setName('mouli-check-slug')
+		.setDescription('View the stats of a specific mouli')
+		.addStringOption((option) => option.setName('id').setDescription('The slug of the mouli to check').setRequired(true)),
 	async execute(interaction) {
 		if (interaction.user.id != process.env.OWNER_ID) {
 			const component = [
@@ -22,17 +23,25 @@ module.exports = {
 		await interaction.deferReply();
 		const {data, year} = await main();
 
-        let best = [];
-        for (const mouli in data) {
-            let date = data[mouli].date;
-            const timestamp = Date.parse(date);
-            if (best.length === 0) {
-                best = [mouli, timestamp];
-            } else if (timestamp >= best[1]) {
-                best = [mouli, timestamp];
+        let newData = null;
+        if (interaction.options.getString('id')) {
+            const mouliSlug = interaction.options.getString('id');
+            for (const mouli in data) {
+                if (data[mouli].project.slug == mouliSlug) {
+                    newData = data[mouli];
+                    break;
+                }
             }
         }
-        const newData = data[best[0]];
+        if (!newData) {
+            const component = [
+                new ContainerBuilder().addTextDisplayComponents(
+                    new TextDisplayBuilder().setContent(`### ──┤ Mouli Not Found ├──\nThe mouli with the provided slug was not found`)
+                )
+            ];
+            await interaction.editReply({ components: component, flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral] });
+            return;
+        }
 
         let type = "unknown";
         if (Object.keys(newData).includes("project")) {
@@ -94,7 +103,7 @@ module.exports = {
         );
 
         component.addTextDisplayComponents(
-            new TextDisplayBuilder().setContent(`**${date}**\n-# *Slug: ${parsedData.slug}*\n`)
+            new TextDisplayBuilder().setContent(`**${date}**\n-# *Id: ${parsedData.slug}*\n`)
         );
 
 		await interaction.editReply({ components: [component], flags: [MessageFlags.IsComponentsV2] });

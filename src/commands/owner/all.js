@@ -37,6 +37,7 @@ module.exports = {
 			}
 		}
 
+		let countMouli = 0;
 		for (const mouli of mouliOrders) {
 			const mouliName = mouli[0];
 
@@ -55,8 +56,10 @@ module.exports = {
 			count = "█".repeat(count) + "░".repeat(20 - count);
 			const date = `<t:${mouli[2]}:R>`;
 			component.addTextDisplayComponents(
-				new TextDisplayBuilder().setContent(`### ──┤ ${mouliName} ├──\nPourcent: **${pourcent}**\n**${count}**\nDate: **${date}**\nId: **${mouli[3]}**\n`)
+				new TextDisplayBuilder().setContent(`### ──┤ ${mouliName} ├──\n**${pourcent}**\n**${count}**\n**${date}**\n-# *Slug: ${mouli[3]}*\n`)
 			)
+			countMouli++;
+			if (countMouli >= 5) break;
 		}
 
 		await interaction.editReply({ components: [component], flags: [MessageFlags.IsComponentsV2] });
