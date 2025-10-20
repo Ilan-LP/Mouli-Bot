@@ -42,7 +42,7 @@ export async function check(client) {
 			new TextDisplayBuilder().setContent(`### ──┤ New Mouli ├──\nName: **${mouliName}**\nDate: **${date}**\nId: **${mouli[3]}**\n@everyone`)
 		)
 
-        client.channels.cache.get(process.env.CHANNEl_ID).send({ components: [component], flags: [MessageFlags.IsComponentsV2] });
+        client.channels.cache.get(process.env.CHANNEL_ID).send({ components: [component], flags: [MessageFlags.IsComponentsV2] });
         fs.writeFileSync('data.json', `${newData}`, 'utf-8')
     }
 }
