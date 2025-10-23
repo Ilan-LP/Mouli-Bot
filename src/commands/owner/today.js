@@ -27,25 +27,26 @@ module.exports = {
             )
 
         data.sort((a, b) => {
-            const dateAStart = new Date(a.StartDate || a.activityStartDate);
-            const dateBStart = new Date(b.StartDate || b.activityStartDate);
+            const dateAStart = new Date(a.startDate || a.activityStartDate);
+            const dateBStart = new Date(b.startDate || b.activityStartDate);
             if (dateAStart.getTime() === dateBStart.getTime()) {
-                const dateAEnd = new Date(a.EndDate || a.activityEndDate);
-                const dateBEnd = new Date(b.EndDate || b.activityEndDate);
+                const dateAEnd = new Date(a.endDate || a.activityEndDate);
+                const dateBEnd = new Date(b.endDate || b.activityEndDate);
                 return dateAEnd.getTime() - dateBEnd.getTime();
             }
             return dateAStart.getTime() - dateBStart.getTime();
         });
 
         for (const event of data) {
-            const startDate = new Date(event.StartDate || event.activityStartDate);
-            const endDate = new Date(event.EndDate || event.activityEndDate);
-            const start = startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            const end = endDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            const startDate = new Date(event.startDate || event.activityStartDate);
+            const endDate = new Date(event.endDate || event.activityEndDate);
+
+            const start = startDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const end = endDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             const title = event.activityName
-            const room = event.rooms[0].name
+            const room = event.rooms[0]
             component.addTextDisplayComponents(
-                new TextDisplayBuilder().setContent(`**${start}-${end}:\n   ${title}** ${room ? `**|** _${room}_` : ''}`)
+                new TextDisplayBuilder().setContent(`**${start}-${end}:\n   ${title}** ${room ? `\n   _${room.name}_` : ''}`)
             )
         }
 		await interaction.editReply({ components: [component], flags: [MessageFlags.IsComponentsV2] });

@@ -47,11 +47,10 @@ module.exports = {
         }
         for (const day in days) {
             const dayName = new Date(day).toLocaleDateString('en-US', { weekday: 'long' }); 
-            let text = `**${dayName}:**\n   **`;
+            let text = `**${dayName}:**\n`;
             for (const titleIndex in days[day]) {
-                text += `${days[day][titleIndex]}`;
-                if (titleIndex < days[day].length - 1) text += ` | `;
-                else text += `**`;
+                text += `   **${days[day][titleIndex]}**`;
+                if (titleIndex < days[day].length - 1) text += `\n`;
             }
             
             component.addTextDisplayComponents(
